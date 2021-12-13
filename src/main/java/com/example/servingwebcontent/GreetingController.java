@@ -9,12 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 @Controller
 public class GreetingController {
@@ -48,11 +45,12 @@ public class GreetingController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
         LocalDateTime dateTimeStart = LocalDateTime.parse(startTime, formatter);
         LocalDateTime dateTimeEnd = LocalDateTime.parse(endTime, formatter);
-        Booking booking = new Booking(dateTimeStart, dateTimeEnd, comment);
+        Booking booking = Booking.builder()
+                .startTime(dateTimeStart)
+                .endTime(dateTimeEnd)
+                .comment(comment)
+                .build();
         bookingRepository.save(booking);
         return "redirect:/";
     }
-
-
-
 }
